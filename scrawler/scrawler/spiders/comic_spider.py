@@ -10,10 +10,10 @@ class ComicSpider(scrapy.Spider):
     #    Rule(sle(allow=("")), follow=True, callback='parse_item')           
  #]
     def parse(self, response):
-    	domain = "wiki.52poke.com"
-    	for i in response.xpath("//body//table[@class='a-c roundy eplist bgl-一般 b-一般 bw-2']//tr//td[2]"):
-
-        	item = ComicItem()
-        	item['name'] = i.xpath('a/text()').extract()[0]
-        	item['url'] = domain + i.xpath('a/@href').extract()[0]
-        	yield item
+        domain = "wiki.52poke.com"
+        for i in response.xpath("//body//table[@class='a-c roundy eplist bgl-一般 b-一般 bw-2']//tr//td[2]"):
+            item = ComicItem()
+            item['name'] = i.xpath('a/text()').extract()[0]
+            item['url'] = domain + i.xpath('a/@href').extract()[0]
+            #print (item['name'])
+            yield item
