@@ -8,6 +8,7 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
+import os
 
 BOT_NAME = 'scrawler'
 
@@ -20,6 +21,32 @@ NEWSPIDER_MODULE = 'scrawler.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+
+ITEM_PIPELINES = {
+	'scrawler.pipelines.ScrawlerPipeline': 300,
+}
+
+# request并发数
+CONCURRENT_REQUESTS = 100
+
+# 日志级别
+LOG_LEVEL = 'INFO'
+
+# 关闭cookie，提高性能
+COOKIES_ENABLED = True
+
+# 禁止重试
+RETRY_ENABLED = True
+
+# 减少下载超时
+DOWNLOAD_TIMEOUT = 50
+
+# 禁止重定向
+REDIRECT_ENABLED = False
+
+# 图片存储地址
+IMAGES_DIR = os.getcwd()
+
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

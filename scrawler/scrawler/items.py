@@ -9,5 +9,8 @@ import scrapy
 
 
 class ComicItem(scrapy.Item):
-    name = scrapy.Field()
-    url = scrapy.Field()
+	number = scrapy.Field()
+	name_cn = scrapy.Field()
+	name_en = scrapy.Field()
+	page_url = scrapy.Field()
+	image_url = scrapy.Field()
