@@ -5,9 +5,11 @@ comic_crawler
 运行前准备
 - 安装 scrapy
 
-`sudo apt-get install python-pip`
-`sudo apt-get install python-dev libevent-dev libssl-dev`
-`sudo pip install scrapy`
+-# `sudo apt-get install python-pip`
+
+-# `sudo apt-get install python-dev libevent-dev libssl-dev`
+
+-# `sudo pip install scrapy`
 
 ---
 运行命令
