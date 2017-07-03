@@ -14,3 +14,4 @@ class ComicItem(scrapy.Item):
 	name_en = scrapy.Field()
 	page_url = scrapy.Field()
 	image_url = scrapy.Field()
+	image_path = scrapy.Field()

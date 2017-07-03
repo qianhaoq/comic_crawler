@@ -20,12 +20,16 @@ class ScrawlerPipeline(object):
 		if not os.path.exists(dir_path):
 			os.makedirs(dir_path)
 
+		# 图片下载到本地
+		file_path = dir_path + item['number'] + '.png'
+		urllib.request.urlretrieve(item['image_url'], file_path)
+
+		item['image_path'] = file_path
+
 		# 资料写入文件
 		line = json.dumps(dict(item)).encode().decode('unicode-escape') + "\n"
 		self.file.write(line)
 
-		# 图片下载到本地
-		file_path = dir_path + item['number'] + '.png'
-		urllib.request.urlretrieve(item['image_url'], file_path)
+
 
 		return item

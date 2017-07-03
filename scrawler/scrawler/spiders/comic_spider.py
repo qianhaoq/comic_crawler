@@ -22,11 +22,13 @@ class ComicSpider(Spider):
             item['name_cn'] = i.xpath('td[2]/a/text()').extract()[0]
             item['name_en'] = i.xpath('td[4]/a/text()').extract()[0]
             item['page_url'] = self.domain + i.xpath('td[2]/a/@href').extract()[0]
+            item['image_path'] = ""
             sub_url = "http://" + item['page_url']
 
             print (item['number'])
             # yield item
-
+            if sub_url == self.start_urls[0]:
+                continue
             yield Request(sub_url, callback=self.sub_parse, meta={'item':item})
 
     def sub_parse(self, response):
@@ -37,6 +39,14 @@ class ComicSpider(Spider):
 
         page_detail = Selector(response)
 
-        item['image_url'] = "http:" + page_detail.xpath('//body//img[@alt=' + '"' + item['number'] + item['name_en'] + '.png' + '"]/@data-url').extract()[0]
-
+        # 特殊case ，存在性别差异而图片不同的情况
+        # try:
+        #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@alt=' + '"' + item['number'] + item['name_en'] + '.png' + '"]/@data-url').extract()[0]
+        # except Exception:
+        #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@alt=' + '"' + item['number'] + item['name_en'] + '-Male' + '.png' + '"]/@data-url').extract()[0]
+        item['image_url'] = "http:" + page_detail.xpath('//body//img[@width>"240"]/@data-url').extract()[0] 
+        # try:
+        #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@width>"240"]/@data-url').extract()[0]
+        # except Exception:
+        #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@width="300"]/@data-url').extract()[0]
         yield item
