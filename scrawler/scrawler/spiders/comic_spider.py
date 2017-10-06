@@ -20,16 +20,23 @@ class ComicSpider(Spider):
                 continue
             item['number'] = no[2:5]
             item['name_cn'] = i.xpath('td[2]/a/text()').extract()[0]
+            item['name_jp'] = i.xpath('td[3]/a/text()').extract()[0]
             item['name_en'] = i.xpath('td[4]/a/text()').extract()[0]
             item['page_url'] = self.domain + i.xpath('td[2]/a/@href').extract()[0]
-            item['image_path'] = ""
-            sub_url = "http://" + item['page_url']
+
+            # 补充google搜索结果页面
+            keyword = item['name_en']
+            search = keyword.replace(' ', '%20')
+            item['google_image_url'] = 'https://www.google.com/search?q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
+            # item['image_path'] = ""
+            # sub_url = "http://" + item['page_url']
 
             print (item['number'])
-            # yield item
-            if sub_url == self.start_urls[0]:
-                continue
-            yield Request(sub_url, callback=self.sub_parse, meta={'item':item})
+            yield item
+            # if sub_url == self.start_urls[0]:
+            #     continue
+
+            # yield Request(sub_url, callback=self.sub_parse, meta={'item':item})
 
     def sub_parse(self, response):
         """
@@ -44,7 +51,7 @@ class ComicSpider(Spider):
         #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@alt=' + '"' + item['number'] + item['name_en'] + '.png' + '"]/@data-url').extract()[0]
         # except Exception:
         #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@alt=' + '"' + item['number'] + item['name_en'] + '-Male' + '.png' + '"]/@data-url').extract()[0]
-        item['image_url'] = "http:" + page_detail.xpath('//body//img[@width>"240"]/@data-url').extract()[0] 
+        item['image_url'] = "http:" + page_detail.xpath('//body//img[@width>"240"]/@data-url').extract()[0]
         # try:
         #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@width>"240"]/@data-url').extract()[0]
         # except Exception:
