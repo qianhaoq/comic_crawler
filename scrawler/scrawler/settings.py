@@ -22,8 +22,9 @@ NEWSPIDER_MODULE = 'scrawler.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
+# 第二个数字代表优先级(1-1000)，数字越低，优先级越高
 ITEM_PIPELINES = {
-	'scrawler.pipelines.ScrawlerPipeline': 300,
+	'scrawler.pipelines.ScrawlerPipeline': 1,
 }
 
 # request并发数
@@ -110,8 +111,8 @@ IMAGES_DIR = os.getcwd()
 
 # Enable and configure HTTP caching (disabled by default)
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-#HTTPCACHE_ENABLED = True
-#HTTPCACHE_EXPIRATION_SECS = 0
-#HTTPCACHE_DIR = 'httpcache'
-#HTTPCACHE_IGNORE_HTTP_CODES = []
-#HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+HTTPCACHE_ENABLED = True
+HTTPCACHE_EXPIRATION_SECS = 0
+HTTPCACHE_DIR = 'httpcache'
+HTTPCACHE_IGNORE_HTTP_CODES = []
+HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'

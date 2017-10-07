@@ -18,6 +18,7 @@ class ComicSpider(Spider):
             no = i.xpath('td[1]/text()').extract()[0]
             if (len(no) < 4):
                 continue
+            item['comic_name'] = "Pokemon"
             item['number'] = no[2:5]
             item['name_cn'] = i.xpath('td[2]/a/text()').extract()[0]
             item['name_jp'] = i.xpath('td[3]/a/text()').extract()[0]
