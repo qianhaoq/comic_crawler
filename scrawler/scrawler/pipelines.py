@@ -9,6 +9,18 @@ import os
 import urllib.request
 
 class ScrawlerPipeline(object):
+	"""
+	def get_media_requests(self, item, info):
+		for image_url in item['image_urls']:
+			yield scrapy.Request(image_url)
+
+	def item_completed(self, results, item, info):
+		image_paths = [x['path'] for ok, x in results if ok]
+		if not image_paths:
+			print("error: Item contains no images")
+		item['image_paths'] = image_paths
+		return item
+	"""
 	# def __init__(self):
 
 	# 如果spider is open，打开一个文件
@@ -31,7 +43,7 @@ class ScrawlerPipeline(object):
 		current_path = dir_path + item['number'] + '/'
 		if not os.path.exists(current_path):
 			os.makedirs(current_path)
-			
+
 		item['image_dir'] = current_path
 		# 图片下载到本地
 		# file_path = dir_path + item['number'] + '.png'
