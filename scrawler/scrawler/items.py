@@ -23,6 +23,10 @@ class ComicItem(scrapy.Item):
 	page_url = scrapy.Field()
 	# google搜索页面url
 	google_image_url = scrapy.Field()
+	# 百度图片搜索结果页面
+	baidu_image_url = scrapy.Field()
+	# google picture url
+	image_urls = scrapy.Field()
 	# 本地图片保持路径
 	image_dir = scrapy.Field()
 	#image_url = scrapy.Field()

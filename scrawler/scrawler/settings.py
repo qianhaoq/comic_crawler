@@ -20,7 +20,7 @@ NEWSPIDER_MODULE = 'scrawler.spiders'
 #USER_AGENT = 'scrawler (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # 第二个数字代表优先级(1-1000)，数字越低，优先级越高
 ITEM_PIPELINES = {
@@ -31,7 +31,8 @@ ITEM_PIPELINES = {
 CONCURRENT_REQUESTS = 100
 
 # 日志级别
-LOG_LEVEL = 'INFO'
+# LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 
 # 关闭cookie，提高性能
 COOKIES_ENABLED = True

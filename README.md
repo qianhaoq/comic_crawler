@@ -13,4 +13,6 @@ comic_crawler
 
 ---
 运行命令
+
+- `cd comic_crawler/scrawler/scrawler/`
 - `scrapy crawl comic`
