@@ -25,8 +25,10 @@ ROBOTSTXT_OBEY = False
 # 第二个数字代表优先级(1-1000)，数字越低，优先级越高
 ITEM_PIPELINES = {
 	'scrawler.pipelines.ScrawlerPipeline': 1,
+	'scrapy.pipelines.images.ImagesPipeline': 1
 }
 
+IMAGES_STORE = "/home/qh/git/comic_crawler/scrawler/scrawler/images/"
 # request并发数
 CONCURRENT_REQUESTS = 100
 

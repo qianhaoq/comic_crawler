@@ -6,9 +6,24 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import json
 import os
-import urllib.request
+from scrapy.pipelines.images import ImagesPipeline
+from scrapy.exceptions import DropItem
+from scrapy.http import Request
 
 class ScrawlerPipeline(object):
+
+	def get_media_requests(self, item, info):
+		for image_url in item['image_urls']:
+			yield Request(image_url)
+
+	def item_completed(self, results, item, info):
+		image_path = [x['path'] for ok, x in results if ok]
+		print (image_path)
+		if not image_path:
+			raise DropItem('Item contains no images')
+			# print("error: Item contains no images")
+		item['image_paths'] = image_path
+		return item
 	"""
 	def get_media_requests(self, item, info):
 		for image_url in item['image_urls']:
@@ -54,5 +69,15 @@ class ScrawlerPipeline(object):
 		# 资料写入文件
 		line = json.dumps(dict(item)).encode().decode('unicode-escape') + "\n"
 		self.file.write(line)
+
+		# for image_url in item['image_urls']:
+		# 	unit_name = image_url.split('/')[-1]
+		# 	image_name = item['image_dir'] + unit_name
+		# 	with open(image_name, 'wb') as handle:
+		# 		reponse = requests.get(image_url, stream=True)
+		# 		for block in response.iter_content(1204):
+		# 			if not block:
+		# 				break
+		# 			handle.write(block)
 
 		return item
