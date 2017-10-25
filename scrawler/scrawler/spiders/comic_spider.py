@@ -3,6 +3,15 @@ from scrapy.spiders import Spider
 from scrapy.http import Request
 from scrapy.selector import Selector
 import json
+import re
+import os
+# invalid_escape = re.compile(r'\\[0-7]{1,3}')
+#
+# def replace_with_byte(self, match):
+#     return chr(int(match.group(0)[1:], 8))
+#
+# def repair(brokenjson):
+#     return invalid_escape.sub(replace_with_byte, brokenjson)
 
 class ComicSpider(Spider):
     name = "comic"
@@ -49,9 +58,31 @@ class ComicSpider(Spider):
         抓取子页面，以补充图片信息
         """
         item = response.meta['item']
-        print ('------------------------------')
-        print (response.body)
-        print ('------------------------------')
+        item['image_urls'] = []
+        raw_data = response.body.decode('utf-8')
+        rsp_data = json.loads(raw_data)
+        image_list = []
+        for image_info in rsp_data['imgs']:
+            item['image_urls'].append(image_info['objURL'])
+        yield item
+        # try:
+        #     raw_data = response.body.decode('utf-8')
+        # except:
+        #     return item
+        # try:
+        #     raw_data = response.body.decode('utf-8')
+        # except Exception:
+        #     raw_data = response.body.decode('unicode_escape')
+        # sub_data = re.sub(r"\\x26([a-zA-Z]{2,6});", r"&\1;", raw_data);
+        # sub_data = repair(raw_data)
+        # try:
+        #     data = json.loads(raw_data)
+        # except:
+        #     return item
+        # for image_info in data['imgs']:
+        #     continue
+        #     #print(image_info['objURL'])
+        #     item['image_urls'].append(image_info['objURL'])
         # data = response.xpath('/').extract()[0].strip()
         # page_detail = Selector(response)
         # item['image_urls'] = []
@@ -59,7 +90,7 @@ class ComicSpider(Spider):
         # item['image_urls'] = []
         # for image_info in rsp_data['imgs']:
         #     item['image_urls'].append(image_info['objURL'])
-        return item
+        # return item
             #try:
             #    item['image_urls'].append(i.xpath('li[1]/div[1]/a/img/@src').extract()[0])
             #except Exception:
@@ -85,4 +116,4 @@ class ComicSpider(Spider):
         #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@width>"240"]/@data-url').extract()[0]
         # except Exception:
         #     item['image_url'] = "http:" + page_detail.xpath('//body//img[@width="300"]/@data-url').extract()[0]
-        yield item
+        # yield item

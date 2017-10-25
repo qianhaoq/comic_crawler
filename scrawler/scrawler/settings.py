@@ -32,6 +32,7 @@ CONCURRENT_REQUESTS = 100
 
 # 日志级别
 # LOG_LEVEL = 'INFO'
+# LOG_LEVEL = 'DEBUG'
 LOG_LEVEL = 'DEBUG'
 
 # 关闭cookie，提高性能
