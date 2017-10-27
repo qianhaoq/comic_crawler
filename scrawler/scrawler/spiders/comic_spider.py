@@ -5,18 +5,12 @@ from scrapy.selector import Selector
 import json
 import re
 import os
-# invalid_escape = re.compile(r'\\[0-7]{1,3}')
-#
-# def replace_with_byte(self, match):
-#     return chr(int(match.group(0)[1:], 8))
-#
-# def repair(brokenjson):
-#     return invalid_escape.sub(replace_with_byte, brokenjson)
+
 
 class ComicSpider(Spider):
     name = "comic"
     domain = "wiki.52poke.com"
-    allowed_domains = ["wiki.52poke.com","www.google.com","image.baidu.com"]
+    allowed_domains = ["wiki.52poke.com","www.google.ca","image.baidu.com"]
     start_urls = ["http://wiki.52poke.com/wiki/%E5%AE%9D%E5%8F%AF%E6%A2%A6%E5%88%97%E8%A1%A8%EF%BC%88%E6%8C%89%E5%85%A8%E5%9B%BD%E5%9B%BE%E9%89%B4%E7%BC%96%E5%8F%B7%EF%BC%89/%E7%AE%80%E5%8D%95%E7%89%88",]
 
     def parse(self, response):
@@ -38,24 +32,36 @@ class ComicSpider(Spider):
             # 补充google搜索结果页面
             keyword = item['name_en']
             search = keyword.replace(' ', '%20')
-            # item['google_image_url'] = 'https://www.google.com/search?q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
-            # item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search
-            item['baidu_image_url'] = 'https://image.baidu.com/search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=' + search + '&cg=girl&pn=1&rn=50&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=1e0000001e'
-            # item['image_path'] = ""
-            # sub_url = "http://" + item['page_url']
+            item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search
+            # item['baidu_image_url'] = 'https://image.baidu.com/search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=' + search + '&cg=girl&pn=1&rn=50&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=1e0000001e'
 
-            # print (item['number'])
-            # print (item['google_image_url'])
-            # yield item
-            # if sub_url == self.start_urls[0]:
-            #     continue
-            # yield item
-            # sub_url = item['google_image_url']
-            yield Request(item['baidu_image_url'], callback=self.parse_item, meta={'item':item})
+            # yield Request(item['baidu_image_url'], callback=self.baidu_parse_item, meta={'item':item})
+            yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
 
-    def parse_item(self, response):
+
+    def google_parse_item(self, response):
         """
-        抓取子页面，以补充图片信息
+        抓取google图片搜素结果的子页面图片链接
+        """
+        item = response.meta['item']
+
+        item['image_urls'] = []
+
+        # print (response.body)
+        # os._exit(0)
+        #print(item['number'])
+        # //*[@id="rg_s"]/div[1]/a/img
+        # //*[@id="ires"]/table/tbody/tr[1]/td[1]/a/img
+        for i in response.xpath("//*[@id='ires']/table"):
+            for sub_url in i.xpath("//tr/td/a/img/@src").extract():
+                item['image_urls'].append(sub_url)
+            # print (i.xpath("//tr/td/a/img/@src").extract())
+            # os._exit(0)
+        yield item
+
+    def baidu_parse_item(self, response):
+        """
+        抓取baidu图片的子页面，以补充图片信息
         """
         item = response.meta['item']
         item['image_urls'] = []

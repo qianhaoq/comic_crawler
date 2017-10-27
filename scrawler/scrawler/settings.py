@@ -25,7 +25,7 @@ ROBOTSTXT_OBEY = False
 # 第二个数字代表优先级(1-1000)，数字越低，优先级越高
 ITEM_PIPELINES = {
 	'scrawler.pipelines.ScrawlerPipeline': 1,
-	'scrawler.pipelines.MyImagePipeline': 300
+	# 'scrawler.pipelines.MyImagePipeline': 300
 }
 
 IMAGES_STORE = "/home/qh/git/comic_crawler/scrawler/scrawler/images/"
@@ -35,7 +35,7 @@ CONCURRENT_REQUESTS = 100
 # 日志级别
 # LOG_LEVEL = 'INFO'
 # LOG_LEVEL = 'DEBUG'
-LOG_LEVEL = 'ERROR'
+LOG_LEVEL = 'INFO'
 
 # 关闭cookie，提高性能
 COOKIES_ENABLED = True
