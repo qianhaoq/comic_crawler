@@ -9,7 +9,10 @@ from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exceptions import DropItem
 import os
 import json
+import time
 
+
+IMAGES_DIR = os.getcwd()
 # 图片下载管道
 class MyImagePipeline(ImagesPipeline):
 
@@ -33,11 +36,26 @@ class MyImagePipeline(ImagesPipeline):
 
     def item_completed(self, results, item, info):
         image_paths = [x['path'] for ok, x in results if ok]
+        dir_path = '%s/images/' % (IMAGES_DIR) 
         if not image_paths:
             raise DropItem("Item contains no images")
+        # 等待列表
+        wait_list = []
         for img_path in image_paths:
-            newname = item['number'] + '/' + img_path.split('/')[-1]
-            os.rename("/home/qh/git/comic_crawler/scrawler/scrawler/images/" + img_path, "/home/qh/git/comic_crawler/scrawler/scrawler/images/" + newname)
+            old_img = dir_path + img_path
+            new_img = dir_path + item['number'] + '/' + img_path.split('/')[-1]
+            if os.path.exists(old_img):
+                os.rename(old_img, new_img)
+            else:
+                wait_list.append(img_path)
+        # 等待由于磁盘写入未被处理的图片
+        time.sleep(2)
+        # 消耗等待列表的数据
+        for img_path in wait_list:
+            old_img = dir_path + img_path
+            new_img = dir_path + item['number'] + '/' + img_path.split('/')[-1]
+            if os.path.exists(old_img):
+                os.rename(old_img, new_img)
         return item
 
 
