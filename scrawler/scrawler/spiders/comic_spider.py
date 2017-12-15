@@ -33,11 +33,17 @@ class ComicSpider(Spider):
             keyword = item['name_en']
             search = keyword.replace(' ', '%20')
 
-            item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search
+            for i in range(0,5):
+                # print('https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch&start=' + str(20 * i) + '&sa=N')
+                item['google_image_url'] = 'https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch&start=' + str(20 * i) + '&sa=N'
+                yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
+
+
+            # item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search
+
             # item['google_image_url'] =  'https://www.google.ca/search?q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
             # item['baidu_image_url'] = 'https://image.baidu.com/search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=' + search + '&cg=girl&pn=1&rn=50&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=1e0000001e'
             # yield Request(item['baidu_image_url'], callback=self.baidu_parse_item, meta={'item':item})
-            yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
 
 
     def google_parse_item(self, response):
@@ -48,25 +54,15 @@ class ComicSpider(Spider):
 
         item['image_urls'] = []
 
-        # print (response.body)
-        # os._exit(0)
-        #print(item['number'])
-        # //*[@id="rg_s"]/div[1]/a/img
-        # //*[@id="ires"]/table/tbody/tr[1]/td[1]/a/img
+        
 
+        ## old version
         for i in response.xpath("//*[@id='ires']/table"):
             for sub_url in i.xpath("//tr/td/a/img/@src").extract():
                 item['image_urls'].append(sub_url)
-            # print (i.xpath("//tr/td/a/img/@src").extract())
-            # os._exit(0)
         yield item
 
-        # for i in response.xpath("//*[@id='ires']/table"):
-        #     for sub_url in i.xpath("//tr/td/a/img/@src").extract():
-        #         item['image_urls'].append(sub_url)
-        #     print (i.xpath("//tr/td/a/img/@src").extract())
-        #     os._exit(0)
-        # yield item
+
 
     def baidu_parse_item(self, response):
         """
