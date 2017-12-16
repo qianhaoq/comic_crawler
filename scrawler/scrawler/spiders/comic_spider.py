@@ -36,7 +36,7 @@ class ComicSpider(Spider):
 
             item['google_image_url'] = 'https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch'
 
-            for i in range(0,5):
+            for i in range(0, 1):
                 input_url = item['google_image_url'] + '&start=' + str(20 * i) + '&sa=N'
                 t = random.randint(0, 10) * 0.1
                 time.sleep(t)
