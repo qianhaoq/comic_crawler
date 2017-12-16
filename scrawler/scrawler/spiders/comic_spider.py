@@ -5,7 +5,8 @@ from scrapy.selector import Selector
 import json
 import re
 import os
-
+import random
+import time
 
 class ComicSpider(Spider):
     name = "comic"
@@ -33,10 +34,15 @@ class ComicSpider(Spider):
             keyword = item['name_en']
             search = keyword.replace(' ', '%20')
 
+            item['google_image_url'] = 'https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch'
+
             for i in range(0,5):
-                # print('https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch&start=' + str(20 * i) + '&sa=N')
-                item['google_image_url'] = 'https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch&start=' + str(20 * i) + '&sa=N'
-                yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
+                input_url = item['google_image_url'] + '&start=' + str(20 * i) + '&sa=N'
+                t = random.randint(0, 10) * 0.1
+                time.sleep(t)
+                yield Request(input_url, callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
+                
+                
 
 
             # item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search
