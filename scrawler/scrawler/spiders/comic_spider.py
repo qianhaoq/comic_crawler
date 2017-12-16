@@ -46,7 +46,7 @@ class ComicSpider(Spider):
 
 
             item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search
-                yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
+            yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
 
             # item['google_image_url'] =  'https://www.google.ca/search?q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
             # item['baidu_image_url'] = 'https://image.baidu.com/search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=' + search + '&cg=girl&pn=1&rn=50&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=1e0000001e'
