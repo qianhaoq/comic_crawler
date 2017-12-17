@@ -120,3 +120,14 @@ HTTPCACHE_EXPIRATION_SECS = 0
 HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# vultr
+# 45.77.126.21  22 Los Angeles
+# 207.246.122.70 22 New Jersey
+
+# linode
+# 45.33.37.117 28999 Fremont, CA, USA
+# 139.162.113.67 japan
+
+# banwagong
+# 67.218.159.92 28908 Los Angeles
