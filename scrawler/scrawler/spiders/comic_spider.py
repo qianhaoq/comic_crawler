@@ -14,6 +14,15 @@ class ComicSpider(Spider):
     allowed_domains = ["wiki.52poke.com","www.google.ca","image.baidu.com"]
     start_urls = ["http://wiki.52poke.com/wiki/%E5%AE%9D%E5%8F%AF%E6%A2%A6%E5%88%97%E8%A1%A8%EF%BC%88%E6%8C%89%E5%85%A8%E5%9B%BD%E5%9B%BE%E9%89%B4%E7%BC%96%E5%8F%B7%EF%BC%89/%E7%AE%80%E5%8D%95%E7%89%88",]
 
+    # default_headers = {
+    #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    #     'Accept-Encoding': 'gzip, deflate, sdch, br',
+    #     'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
+    #     'Cache-Control': 'max-age=0',
+    #     'Connection': 'keep-alive',
+    #     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
+    # }
+
     def parse(self, response):
         """
         抓取list页面

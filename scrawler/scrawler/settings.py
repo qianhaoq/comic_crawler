@@ -121,6 +121,8 @@ HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'
+
 # vultr
 # 45.77.126.21  22 Los Angeles
 # 207.246.122.70 22 New Jersey
@@ -131,3 +133,13 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # banwagong
 # 67.218.159.92 28908 Los Angeles
+
+
+## 代理服务器配置
+# 主服务器
+# 67.218.159.92
+# 代理
+# 45.77.126.21:9888
+# 207.246.122.70:9888
+# 45.33.37.117:9888
+# 139.162.113.67:9888
