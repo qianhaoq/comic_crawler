@@ -14,14 +14,14 @@ class ComicSpider(Spider):
     allowed_domains = ["wiki.52poke.com","www.google.ca","image.baidu.com"]
     start_urls = ["http://wiki.52poke.com/wiki/%E5%AE%9D%E5%8F%AF%E6%A2%A6%E5%88%97%E8%A1%A8%EF%BC%88%E6%8C%89%E5%85%A8%E5%9B%BD%E5%9B%BE%E9%89%B4%E7%BC%96%E5%8F%B7%EF%BC%89/%E7%AE%80%E5%8D%95%E7%89%88",]
 
-    # default_headers = {
-    #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    #     'Accept-Encoding': 'gzip, deflate, sdch, br',
-    #     'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
-    #     'Cache-Control': 'max-age=0',
-    #     'Connection': 'keep-alive',
-    #     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
-    # }
+    default_headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, sdch, br',
+        'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
+        'Cache-Control': 'max-age=0',
+        'Connection': 'keep-alive',
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
+    }
 
     def parse(self, response):
         """
@@ -55,7 +55,7 @@ class ComicSpider(Spider):
 
 
             item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search
-            yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
+            yield Request(item['google_image_url'], headers = self.default_headers, callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
 
             # item['google_image_url'] =  'https://www.google.ca/search?q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
             # item['baidu_image_url'] = 'https://image.baidu.com/search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=' + search + '&cg=girl&pn=1&rn=50&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=1e0000001e'
