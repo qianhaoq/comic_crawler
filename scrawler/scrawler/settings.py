@@ -28,6 +28,19 @@ ITEM_PIPELINES = {
 	'scrawler.pipelines.MyImagePipeline': 300
 }
 
+# 下载器中间件
+# DOWNLOADER_MIDDLEWARES = {
+# 	# 置于HttpProxyMiddleware(750)之前
+# 	'scrawler.middlewares.RandomHttpProxyMiddleware':745
+# }
+DOWNLOADER_MIDDLEWARES = {
+     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':543,
+     'scrawler.middlewares.MyproxiesSpiderMiddleware':125
+}
+
+# 配置代理文件
+HTTPPROXY_PROXY_LIST_FILE='proxy_list.json'
+
 IMAGES_STORE = "/home/qh/git/comic_crawler/scrawler/scrawler/images/"
 # request并发数
 CONCURRENT_REQUESTS = 100
@@ -143,3 +156,10 @@ USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Ge
 # 207.246.122.70:9888
 # 45.33.37.117:9888
 # 139.162.113.67:9888
+
+IPPOOL=[
+	{"ipaddr":"45.77.126.21:9888"},
+	{"ipaddr":"207.246.122.70:9888"},
+	{"ipaddr":"45.33.37.117:9888"},
+	{"ipaddr":"139.162.113.67:9888"}
+]
