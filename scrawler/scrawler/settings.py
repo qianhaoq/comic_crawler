@@ -28,6 +28,19 @@ ITEM_PIPELINES = {
 	'scrawler.pipelines.MyImagePipeline': 300
 }
 
+# 下载器中间件
+# DOWNLOADER_MIDDLEWARES = {
+# 	# 置于HttpProxyMiddleware(750)之前
+# 	'scrawler.middlewares.RandomHttpProxyMiddleware':745
+# }
+# DOWNLOADER_MIDDLEWARES = {
+#      'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':543,
+#      'scrawler.middlewares.MyproxiesSpiderMiddleware':125
+# }
+
+# 配置代理文件
+HTTPPROXY_PROXY_LIST_FILE='proxy_list.json'
+
 IMAGES_STORE = "/home/qh/git/comic_crawler/scrawler/scrawler/images/"
 # request并发数
 CONCURRENT_REQUESTS = 100
@@ -121,6 +134,8 @@ HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'
+
 # vultr
 # 45.77.126.21  22 Los Angeles
 # 207.246.122.70 22 New Jersey
@@ -131,3 +146,20 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # banwagong
 # 67.218.159.92 28908 Los Angeles
+
+
+## 代理服务器配置
+# 主服务器
+# 67.218.159.92
+# 代理
+# 45.77.126.21:9888
+# 207.246.122.70:9888
+# 45.33.37.117:9888
+# 139.162.113.67:9888
+
+IPPOOL=[
+	{"ipaddr":"45.77.126.21:9888"},
+	{"ipaddr":"207.246.122.70:9888"},
+	{"ipaddr":"45.33.37.117:9888"},
+	{"ipaddr":"139.162.113.67:9888"}
+]

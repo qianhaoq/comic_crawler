@@ -6,6 +6,48 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
+from collections import defaultdict
+import json
+import random
+from scrawler.settings import IPPOOL
+
+class MyproxiesSpiderMiddleware(object):  
+  
+      def __init__(self,ip=''):  
+          self.ip=ip  
+         
+      def process_request(self, request, spider):  
+          thisip=random.choice(IPPOOL)  
+          print("this is ip:"+thisip["ipaddr"])  
+          request.meta["proxy"]="http://"+thisip["ipaddr"] 
+
+# class RandomHttpProxyMiddleware(HttpProxyMiddleware):
+
+
+#     def __init__(self, auth_encoding='latin-1', proxy_list_file=None):
+#         self.auth_encoding = auth_encoding
+#         self.proxies = defaultdict(list)
+#         proxy_list_file = "proxy_list.json"
+#         print(proxy_list_file)
+#         with open(proxy_list_file) as f:
+#             proxy_list = json.load(f)
+#             for proxy in proxy_list:
+#                 scheme = proxy['proxy_scheme']
+#                 url = proxy['proxy']
+#                 self.proxies['scheme'].append(self._get_proxy(url, scheme))
+
+#         @classmethod
+#         def from_crawler(cls, crawler):
+#             auth_encoding = crawler.settings.get('HTTPPROXY_AUTH_ENCODING', 'latain-1')
+#             proxy_list_file = crawler.settings.get('HTTPPROXY_PROXY_LIST_FILE')
+#             return cls(auth_encoding, proxy_list_file)
+
+#         def _set_proxy(self, request, scheme):
+#             creds, proxy = random.choice(self.proxies[scheme])
+#             request.meta['proxy'] = proxy
+#             if creds:
+#                 request.headers['Proxy-Authorization'] = b'Basic' + creds
 
 
 class ScrawlerSpiderMiddleware(object):
