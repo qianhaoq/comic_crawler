@@ -24,15 +24,21 @@ with open('items_bak.json', 'r') as f:
             print(url)
             ir = requests.get(url)
             if ir.status_code == 200:
+                flag = 0
                 raw_filetype = url.split(".")[-1]
-                type_list = ["jpg", "png", "gif", "JPG", "JPEG", "PNG"]
+                type_list = ["jpg", "png", "gif", "jpeg", "JPG", "JPEG", "PNG"]
                 for type_item in type_list:
                     filetype = re.search(type_item, raw_filetype, flags=0)
                     if filetype:
                         break
                 if not filetype:
                     filetype = raw_filetype
-                filename = item_path + str(idx) + "." + filetype.group(0)
+                    flag = 1
+                    
+                if flag == 0:
+                    filename = item_path + str(idx) + "." + filetype.group(0)
+                else:
+                    filename = item_path + str(idx) + "." + filetype
                 print(filename)
                 open(filename, 'wb').write(ir.content)
 
