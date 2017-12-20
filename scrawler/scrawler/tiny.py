@@ -22,7 +22,10 @@ with open('items_bak.json', 'r') as f:
             os.makedirs(item_path)
         for idx, url in enumerate(data['image_urls'],1):
             print(url)
-            ir = requests.get(url)
+            try:
+                ir = requests.get(url)
+            except:
+                continue
             if ir.status_code == 200:
                 flag = 0
                 raw_filetype = url.split(".")[-1]
