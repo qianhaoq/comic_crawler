@@ -26,7 +26,7 @@ with open('items_bak.json', 'r') as f:
             if ir.status_code == 200:
                 flag = 0
                 raw_filetype = url.split(".")[-1]
-                type_list = ["jpg", "png", "gif", "jpeg", "JPG", "JPEG", "PNG"]
+                type_list = ["jpg", "png", "gif", "jpeg", "JPG", "JPEG", "PNG", "GIF"]
                 for type_item in type_list:
                     filetype = re.search(type_item, raw_filetype, flags=0)
                     if filetype:
@@ -34,14 +34,16 @@ with open('items_bak.json', 'r') as f:
                 if not filetype:
                     filetype = raw_filetype
                     flag = 1
-                    
+
                 if flag == 0:
                     filename = item_path + str(idx) + "." + filetype.group(0)
                 else:
                     filename = item_path + str(idx) + "." + filetype
                 print(filename)
-                open(filename, 'wb').write(ir.content)
-
+                try:
+                    open(filename, 'wb').write(ir.content)
+                except: #捕捉其余类型异常  
+                    print("ERROR:can't save pic" + filename) 
 
 # with open('items_bak.json', 'r') as f:
 #     data = json.load(f)
