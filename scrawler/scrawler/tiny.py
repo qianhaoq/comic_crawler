@@ -25,9 +25,13 @@ with open('items.json', 'r') as f:
             ir = requests.get(url)
             if ir.status_code == 200:
                 raw_filetype = url.split(".")[-1]
-                filetype = re.search("jpg", raw_filetype, flags=0)
+                type_list = ["jpg", "png", "gif", "JPG", "JPEG", "PNG"]
+                for type_item in type_list:
+                    filetype = re.search(type_item, raw_filetype, flags=0)
+                    if filetype:
+                        break
                 if not filetype:
-                    filetype = re.search("png", raw_filetype, flags=0)
+                    filetype = raw_filetype
                 filename = item_path + str(idx) + "." + filetype.group(0)
                 print(filename)
                 open(filename, 'wb').write(ir.content)
