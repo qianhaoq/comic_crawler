@@ -1,7 +1,7 @@
 import json
 import os
 import requests
-
+import re
 # f = open('lost.txt', 'r')
 
 dir_path = '%s/tinyData/' % (os.getcwd())
@@ -21,10 +21,15 @@ with open('items.json', 'r') as f:
         if not os.path.exists(item_path):
             os.makedirs(item_path)
         for idx, url in enumerate(data['image_urls'],1):
+            print(url)
             ir = requests.get(url)
             if ir.status_code == 200:
-                filetype = url.split(".")[-1]
-                filename = item_path + str(idx) + "." + filetype
+                raw_filetype = url.split(".")[-1]
+                filetype = re.search("jpg", raw_filetype, flags=0)
+                if not filetype:
+                    filetype = re.search("png", raw_filetype, flags=0)
+                filename = item_path + str(idx) + "." + filetype.group(0)
+                print(filename)
                 open(filename, 'wb').write(ir.content)
 
 
