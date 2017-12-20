@@ -19,7 +19,7 @@ class MyproxiesSpiderMiddleware(object):
          
       def process_request(self, request, spider):  
           thisip=random.choice(IPPOOL)  
-          print("this is ip:"+thisip["ipaddr"])  
+        #   print("this is ip:"+thisip["ipaddr"])  
           request.meta["proxy"]="http://"+thisip["ipaddr"] 
 
 # class RandomHttpProxyMiddleware(HttpProxyMiddleware):

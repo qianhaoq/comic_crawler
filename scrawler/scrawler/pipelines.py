@@ -10,6 +10,7 @@ from scrapy.exceptions import DropItem
 import os
 import json
 import time
+from logging import log
 
 
 IMAGES_DIR = os.getcwd()
@@ -38,6 +39,11 @@ class MyImagePipeline(ImagesPipeline):
     #     'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
     # }
 
+    # def image_downloaded(self, response, request, info):
+    #     try:
+    #         super(MyImagePipeline, self).image_downloaded(response, request, info)
+    #     except (IOError, ex):
+    #         log.msg(str(ex), level=log.WARNING, spider=info.spider)
 
     def get_media_requests(self, item, info):
         for image_url in item['image_urls']:
@@ -57,6 +63,7 @@ class MyImagePipeline(ImagesPipeline):
             raise DropItem("Item contains no images")
         # 等待列表
         wait_list = []
+
         for img_path in image_paths:
             old_img = dir_path + img_path
             new_img = dir_path + item['number'] + '/' + img_path.split('/')[-1]
@@ -65,7 +72,8 @@ class MyImagePipeline(ImagesPipeline):
             else:
                 wait_list.append(img_path)
         # 等待由于磁盘写入未被处理的图片
-        time.sleep(2)
+        if wait_list:
+            time.sleep(2)
         # 消耗等待列表的数据
         for img_path in wait_list:
             old_img = dir_path + img_path

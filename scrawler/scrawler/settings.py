@@ -33,10 +33,10 @@ ITEM_PIPELINES = {
 # 	# 置于HttpProxyMiddleware(750)之前
 # 	'scrawler.middlewares.RandomHttpProxyMiddleware':745
 # }
-# DOWNLOADER_MIDDLEWARES = {
-#      'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':543,
-#      'scrawler.middlewares.MyproxiesSpiderMiddleware':125
-# }
+DOWNLOADER_MIDDLEWARES = {
+     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':543,
+     'scrawler.middlewares.MyproxiesSpiderMiddleware':125
+}
 
 # 配置代理文件
 HTTPPROXY_PROXY_LIST_FILE='proxy_list.json'
