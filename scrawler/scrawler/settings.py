@@ -25,7 +25,7 @@ ROBOTSTXT_OBEY = False
 # 第二个数字代表优先级(1-1000)，数字越低，优先级越高
 ITEM_PIPELINES = {
 	'scrawler.pipelines.ScrawlerPipeline': 1,
-	'scrawler.pipelines.MyImagePipeline': 300
+	'scrawler.pipelines.MyImagePipeline': 1
 }
 
 # 下载器中间件
@@ -51,10 +51,10 @@ CONCURRENT_REQUESTS = 100
 LOG_LEVEL = 'INFO'
 
 # 关闭cookie，提高性能
-COOKIES_ENABLED = True
+COOKIES_ENABLED = False
 
 # 禁止重试
-RETRY_ENABLED = True
+RETRY_ENABLED = False
 
 # 减少下载超时
 DOWNLOAD_TIMEOUT = 500
@@ -128,6 +128,7 @@ IMAGES_DIR = os.getcwd()
 
 # Enable and configure HTTP caching (disabled by default)
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
+
 HTTPCACHE_ENABLED = False
 HTTPCACHE_EXPIRATION_SECS = 0
 HTTPCACHE_DIR = 'httpcache'

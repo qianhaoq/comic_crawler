@@ -5,7 +5,8 @@ from scrapy.selector import Selector
 import json
 import re
 import os
-
+import time
+import random
 
 class ComicSpider(Spider):
     name = "comic"
@@ -14,14 +15,12 @@ class ComicSpider(Spider):
     start_urls = ["http://wiki.52poke.com/wiki/%E5%AE%9D%E5%8F%AF%E6%A2%A6%E5%88%97%E8%A1%A8%EF%BC%88%E6%8C%89%E5%85%A8%E5%9B%BD%E5%9B%BE%E9%89%B4%E7%BC%96%E5%8F%B7%EF%BC%89/%E7%AE%80%E5%8D%95%E7%89%88",]
 
     default_headers = {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, sdch, br',
-        'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
-        'Cache-Control': 'max-age=0',
-        'Connection': 'keep-alive',
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
+        'accept': 'image/webp,image/*,*/*;q=0.8',
+        'accept-encoding': 'gzip, deflate, sdch, br',
+        'accept-language': 'zh-CN,zh;q=0.8,en;q=0.6',
+        'referer': 'https://www.google.ca/imghp?hl=zh-CN&tab=wi',
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
     }
-
     def parse(self, response):
         """
         抓取list页面
@@ -42,6 +41,11 @@ class ComicSpider(Spider):
             keyword = item['name_en']
             search = keyword.replace(' ', '%20')
             item['google_image_url'] = 'https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch&start=' + str(0) + '&sa=N'
+        
+            # # 随机休息
+            # t = random.randint(1, 5)
+            # time.sleep(t)
+
             yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
 
             # item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
@@ -73,8 +77,9 @@ class ComicSpider(Spider):
         item['image_urls'] = []
         data = response.body.decode('utf-8')
         result = re.findall('"ou":"(.*?)","ow"',data)
-        for i in range(10):
+        for i in range(0, 2):
             item['image_urls'].append(result[i])
+
         # for sub_url in result:
         #     item['image_urls'].append(sub_url)
         yield item

@@ -10,6 +10,7 @@ comic_crawler
 
 	# 安装必要的库
 	`sudo apt install python3-pip python3-dev libevent-dev libssl-dev`
+	# 
 	`sudo apt install gcc`
 
 	# 安装中文
