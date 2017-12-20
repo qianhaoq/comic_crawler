@@ -10,18 +10,21 @@ comic_crawler
 
 	# 安装必要的库
 	`sudo apt install python3-pip python3-dev libevent-dev libssl-dev`
+	`sudo apt install gcc`
 
 	# 安装中文
 	`sudo apt-get install language-pack-zh-hans`
 
 	# 设置locale
 	`vim /etc/environment`
+
 	## 添加以下2行
 	`LANG="zh_CN.UTF-8"`
 
 	`LANGUAGE="zh_CN:zh:en_US:en"`
 
 	# 安装scrapy
+	`sudo pip3 install setuptools`
 	`sudo pip3 install scrapy`
 
 	# 安装pillow
