@@ -9,7 +9,7 @@ if not os.path.exists(dir_path):
     os.makedirs(dir_path)
 
 
-with open('items.json', 'r') as f:
+with open('items_bak.json', 'r') as f:
     while True:
         line = f.readline()
         if not line:
