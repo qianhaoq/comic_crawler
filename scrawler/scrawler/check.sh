@@ -7,7 +7,7 @@ do
     # echo ${i}
     n=`ls -l | wc -l`
     # echo $n
-    if [ $n -lt 10 ]:
+    if [ $n -lt 5 ]:
     then echo "${i} 图片不足"
     fi
     cd ../../
