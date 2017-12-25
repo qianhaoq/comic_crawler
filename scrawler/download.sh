@@ -32,11 +32,15 @@ set -x
 # touch "compelte!"
 
 # 第三阶段
-cp -r /home/qh/git/comic_crawler/scrawler/new_rawData/207.246.122.70/* /home/qh/git/comic_crawler/scrawler/all/
-cp -r /home/qh/git/comic_crawler/scrawler/new_rawData/67.218.159.92/* /home/qh/git/comic_crawler/scrawler/all/
-cp -r /home/qh/git/comic_crawler/scrawler/rawData/207.246.122.70/* /home/qh/git/comic_crawler/scrawler/all/
-cp -r /home/qh/git/comic_crawler/scrawler/rawData/67.218.159.92/* /home/qh/git/comic_crawler/scrawler/all/
-cp -r /home/qh/git/comic_crawler/scrawler/rawData/45.77.126.21/* /home/qh/git/comic_crawler/scrawler/all/
+# cp -r /home/qh/git/comic_crawler/scrawler/new_rawData/207.246.122.70/* /home/qh/git/comic_crawler/scrawler/all/
+# cp -r /home/qh/git/comic_crawler/scrawler/new_rawData/67.218.159.92/* /home/qh/git/comic_crawler/scrawler/all/
+# cp -r /home/qh/git/comic_crawler/scrawler/rawData/207.246.122.70/* /home/qh/git/comic_crawler/scrawler/all/
+# cp -r /home/qh/git/comic_crawler/scrawler/rawData/67.218.159.92/* /home/qh/git/comic_crawler/scrawler/all/
+# cp -r /home/qh/git/comic_crawler/scrawler/rawData/45.77.126.21/* /home/qh/git/comic_crawler/scrawler/all/
+
+# 第四阶段
+wget -c ftp://192.168.100.59/pokemon_data.tar.gz /home/qh/git/comic_crawler/scrawler &
+wait
 # 45.77.126.21  22 Los Angeles
 # 207.246.122.70 22 New Jersey
 
