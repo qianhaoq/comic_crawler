@@ -17,20 +17,6 @@ IMAGES_DIR = os.getcwd()
 # 图片下载管道
 class MyImagePipeline(ImagesPipeline):
 
-    # def file_path(self, request, response=None, info=None):
-    # #     """
-    # #     :param request: 每一个图片下载管道请求
-    # #     :param response:
-    # #     :param info:
-    # #     :param strip :清洗Windows系统的文件夹非法字符，避免无法创建目录
-    # #     :return: 每套图的分类目录
-    # #     """
-    #     item = request.meta['item']
-    #     folder = item['number']
-    #     image_guid = request.url.split('/')[-1]
-    #     filename = u'full/{0}/{1}'.format(folder, image_guid)
-    #     return filename
-
     default_headers = {
         'accept': 'image/webp,image/*,*/*;q=0.8',
         'accept-encoding': 'gzip, deflate, sdch, br',
@@ -39,51 +25,64 @@ class MyImagePipeline(ImagesPipeline):
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36',
     }
 
-    # def image_downloaded(self, response, request, info):
-    #     try:
-    #         super(MyImagePipeline, self).image_downloaded(response, request, info)
-    #     except (IOError, ex):
-    #         log.msg(str(ex), level=log.WARNING, spider=info.spider)
-
-    def get_media_requests(self, item, info):
-        for image_url in item['image_urls']:
-            # yield Request(image_url)
-
-            self.default_headers['referer'] = image_url
-            yield Request(image_url, headers=self.default_headers)
-
+    # 批量下载
     # def get_media_requests(self, item, info):
     #     for image_url in item['image_urls']:
-    #         yield Request(image_url)
+    #         # yield Request(image_url)
+
+    #         self.default_headers['referer'] = image_url
+    #         yield Request(image_url, headers=self.default_headers)
+
+    # 批量下载
+    # def item_completed(self, results, item, info):
+    #     image_paths = [x['path'] for ok, x in results if ok]
+    #     dir_path = '%s/images/' % (IMAGES_DIR)
+    #     # print(image_paths)
+    #     # print(dir_path)
+    #     # os._exit(0)
+    #     if not image_paths:
+    #         raise DropItem("Item contains no images")
+    #     # 等待列表
+    #     wait_list = []
+
+    #     for img_path in image_paths:
+    #         old_img = dir_path + img_path
+    #         new_img = dir_path + item['number'] + '/' + img_path.split('/')[-1]
+    #         if os.path.exists(old_img):
+    #             os.rename(old_img, new_img)
+    #         else:
+    #             wait_list.append(img_path)
+    #     # 等待由于磁盘写入未被处理的图片
+    #     if wait_list:
+    #         time.sleep(2)
+    #         # 消耗等待列表的数据
+    #         for img_path in wait_list:
+    #             old_img = dir_path + img_path
+    #             new_img = dir_path + item['number'] + '/' + img_path.split('/')[-1]
+    #             if os.path.exists(old_img):
+    #                 os.rename(old_img, new_img)
+    #     return item
+
+    def get_media_requests(self, item, info):
+        yield Request(item['img_url'])
 
     def item_completed(self, results, item, info):
-
         image_paths = [x['path'] for ok, x in results if ok]
         dir_path = '%s/images/' % (IMAGES_DIR)
         # print(image_paths)
         # print(dir_path)
         # os._exit(0)
+
         if not image_paths:
             raise DropItem("Item contains no images")
         # 等待列表
-        wait_list = []
 
         for img_path in image_paths:
             old_img = dir_path + img_path
-            new_img = dir_path + item['number'] + '/' + img_path.split('/')[-1]
-            if os.path.exists(old_img):
-                os.rename(old_img, new_img)
-            else:
-                wait_list.append(img_path)
-        # 等待由于磁盘写入未被处理的图片
-        if wait_list:
-            time.sleep(2)
-            # 消耗等待列表的数据
-            for img_path in wait_list:
-                old_img = dir_path + img_path
-                new_img = dir_path + item['number'] + '/' + img_path.split('/')[-1]
-                if os.path.exists(old_img):
-                    os.rename(old_img, new_img)
+            new_img = dir_path + "full/" + item['number'] + ".jpg"
+            os.rename(old_img, new_img)
+
+
         return item
 
 
@@ -142,11 +141,12 @@ class ScrawlerPipeline(object):
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
 
-        current_path = dir_path + item['number'] + '/'
-        if not os.path.exists(current_path):
-            os.makedirs(current_path)
+        item['local_img_path'] = dir_path + "full/" + item['number'] + ".jpg"
+        # current_path = dir_path + item['number'] + '/'
+        # if not os.path.exists(current_path):
+        #     os.makedirs(current_path)
 
-        item['image_dir'] = current_path
+        # item['image_dir'] = current_path
 
         # 资料写入文件
         line = json.dumps(dict(item)).encode().decode('unicode-escape') + "\n"

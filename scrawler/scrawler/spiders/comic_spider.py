@@ -30,23 +30,30 @@ class ComicSpider(Spider):
             no = i.xpath('td[1]/text()').extract()[0]
             if (len(no) < 4):
                 continue
+            if no[2:5] == "807":
+                continue
+            item['id'] = no[2:5]
             item['comic_name'] = "Pokemon"
             item['number'] = no[2:5]
             item['name_cn'] = i.xpath('td[2]/a/text()').extract()[0]
             item['name_jp'] = i.xpath('td[3]/a/text()').extract()[0]
             item['name_en'] = i.xpath('td[4]/a/text()').extract()[0]
             item['page_url'] = self.domain + i.xpath('td[2]/a/@href').extract()[0]
+            item['img_url'] = "https://assets.pokemon.com/assets/cms2/img/pokedex/full/" + str(item['id']) + ".png"
 
+            yield item
             # 补充google搜索结果页面
-            keyword = item['name_en']
-            search = keyword.replace(' ', '%20')
-            item['google_image_url'] = 'https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch&start=' + str(0) + '&sa=N'
+            # keyword = item['name_en']
+
+            
+            # search = keyword.replace(' ', '%20')
+            # item['google_image_url'] = 'https://www.google.ca/search?q=' + search + '&ie=UTF-8&tbm=isch&start=' + str(0) + '&sa=N'
         
             # # 随机休息
             # t = random.randint(1, 5)
             # time.sleep(t)
 
-            yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
+            # yield Request(item['google_image_url'], callback=self.google_parse_item, meta = {'item' : item, 'dont_redirect': True, 'handle_httpstatus_list': [302]})
 
             # item['google_image_url'] = 'https://www.google.ca/search?source=lnms&tbm=isch&q=' + search + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
             
